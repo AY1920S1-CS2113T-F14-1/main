@@ -4,15 +4,18 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import duke.task.*;
-
+import duke.task.TaskList;
+import duke.task.DukeException;
+import duke.task.Ui;
+import duke.task.Storage;
+import duke.task.DoWithinPeriod;
 
 /**
- * Represents the command to add a task to be done within a time period
+ * Represents the command to add a task to be done within a time period.
  */
 public class AddDoWithinPeriodCommand extends Command {
     /**
-     * Takes in a flag to represent if it should exit and the input given by the User
+     * Takes in a flag to represent if it should exit and the input given by the User.
      * @param isExit True if the program should exit after running this command, false otherwise
      * @param input Input given by the user
      */
@@ -36,10 +39,9 @@ public class AddDoWithinPeriodCommand extends Command {
             throw new DukeException("OOPS!!! Please indicate the end time after \"/to\"");
         }
 
-        String from = input.substring(startIndex + 6, endIndex-1);
+        String from = input.substring(startIndex + 6, endIndex - 1);
         String to = input.substring(endIndex + 4);
-        String task = input.substring(0, startIndex - 1);
-        System.out.println(from + " " + to + " " + task);
+
         LocalDateTime startValue = parseDate(from);
         if (startValue == null) {
             return;
@@ -48,21 +50,26 @@ public class AddDoWithinPeriodCommand extends Command {
         if (endValue == null) {
             return;
         }
+        if (startValue.compareTo(endValue) > 1) {
+            throw new DukeException("Start time cannot be later than end time.");
+        }
+
+        String task = input.substring(0, startIndex - 1);
 
         DoWithinPeriod toAdd = new DoWithinPeriod(task, startValue, endValue);
         taskList.addToArrayList(toAdd);
 
-        ui.output = "Got it. I've added this task: \n  " + toAdd.toString() + "\nNow you have " + taskList.getSize() + " task(s) in the list.";
+        ui.output = "Got it. I've added this task: \n  " + toAdd.toString()
+                + "\nNow you have " + taskList.getSize() + " task(s) in the list.";
         storage.saveToFile();
     }
 
     /**
-     * Converts a string given to an appropriate LocalDateTime Object
+     * Converts a string given to an appropriate LocalDateTime Object.
      * @param dateToParse String to be converted
      * @return LocalDateTime object in d/M/yyyy HHmm format (2/2/2019 1830)
      * @throws DukeException Thrown if the input given does not match the format
      */
-
     private LocalDateTime parseDate(String dateToParse) throws DukeException {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");

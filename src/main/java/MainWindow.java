@@ -40,25 +40,9 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() throws InterruptedException {
         String input = userInput.getText();
         String response = duke.getResponse(input);
-        String[] splitArray = response.split("\n");
-        String newResponse = "";
-        for (String element : splitArray) {
-            if (element.length() > 60) {
-                for (int i = 0; i < element.length(); ++i) {
-                    if (i > 0 && i % 60 == 0) {
-                        newResponse += "\n";
-                    }
-                    newResponse += element.charAt(i);
-                }
-            } else {
-                newResponse += element;
-            }
-            newResponse += "\n";
-        }
-
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getDukeDialog(newResponse, dukeImage)
+                DialogBox.getDukeDialog(response, dukeImage)
         );
         userInput.clear();
 

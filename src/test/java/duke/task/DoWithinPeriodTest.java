@@ -14,9 +14,11 @@ public class DoWithinPeriodTest {
         LocalDateTime endTime = LocalDateTime.of(2017, 2, 15, 16, 00);
 
         DoWithinPeriod newDoWithinPeriod = new DoWithinPeriod("To Complete Test", startTime, endTime);
-        assertEquals("[W][NOT DONE] To Complete Test (from: 13/2/2017 1556 to: 15/2/2017 1600)", newDoWithinPeriod.toString());
+        assertEquals("[W][NOT DONE] To Complete Test (within: 13/2/2017 1556 - 15/2/2017 1600)",
+                newDoWithinPeriod.toString());
 
         newDoWithinPeriod.markAsDone();
-        assertEquals("[W][DONE] To Complete Test (from: 13/2/2017 1556 to: 15/2/2017 1600)", newDoWithinPeriod.toString());
+        assertEquals("[W][DONE] To Complete Test (within: 13/2/2017 1556 - 15/2/2017 1600)",
+                newDoWithinPeriod.toString());
     }
 }
