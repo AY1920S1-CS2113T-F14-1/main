@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -12,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class that deals with storage and I/O of the tasks.
+ * Handles storage and retrieval of the tasks.
  */
 public class Storage {
     private String filePath;
 
     /**
-     * Constructor that takes in the filePath for future I/O
+     * Takes in the filePath for future I/O.
      * @param filePath String representing the path of the file to be written and read from.
      */
     public Storage(String filePath) {
@@ -26,7 +27,7 @@ public class Storage {
     }
 
     /**
-     * Loads in data from an existing file into a created TaskList object
+     * Loads in data from an existing file into a created TaskList object.
      * @return TaskList object consisting of the data read from the file.
      * @throws DukeException Thrown when the file does not exist
      */
@@ -36,7 +37,6 @@ public class Storage {
             if (Files.isRegularFile(Paths.get(this.filePath))) {
                 List<String> input = Files.readAllLines(Paths.get(this.filePath));
 
-                if (input.isEmpty()) throw new DukeException("");
                 for (String value : input) {
                     String[] splitInput = value.split(" \\| ");
 
@@ -58,6 +58,12 @@ public class Storage {
                             newDeadline.markAsDone();
                         }
                         taskList.add(newDeadline);
+                    } else if (value.charAt(0) == 'F') {
+                        FixedDuration newFixedDuration = new FixedDuration(splitInput[2], Duration.parse(splitInput[3]));
+                        if (splitInput[1].equals("1")) {
+                            newFixedDuration.markAsDone();
+                        }
+                        taskList.add(newFixedDuration);
                     } else if (value.charAt(0) == 'W') {
                         DoWithinPeriod newDoWithinPeriod = new DoWithinPeriod(splitInput[2],
                                 parseDate(splitInput[3]), parseDate(splitInput[4]));
@@ -77,19 +83,20 @@ public class Storage {
     }
 
     /**
-     * Creates the directory and file as given by the file path initialized in the constructor
+     * Creates the directory and file as given by the file path initialized in the constructor.
      */
     private void createFileAndDirectory() {
-            try {
-                File myNewFile = new File(this.filePath);
-                Files.createDirectory(Paths.get(myNewFile.getParent()));
-                Files.createFile(Paths.get(this.filePath));
-            } catch(FileAlreadyExistsException e){
-                return;
-            } catch (IOException e) {
-                createFileAndDirectory();
-            }
+        try {
+            File myNewFile = new File(this.filePath);
+            Files.createDirectory(Paths.get(myNewFile.getParent()));
+            Files.createFile(Paths.get(this.filePath));
+        } catch (FileAlreadyExistsException e) {
+            return;
+        } catch (IOException e) {
+            createFileAndDirectory();
+        }
     }
+
     private LocalDateTime parseDate(String dateToParse) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
@@ -101,7 +108,7 @@ public class Storage {
     }
 
     /**
-     * Converts the LocalDateTime object into printable string for writing to file
+     * Converts the LocalDateTime object into printable string for writing to file.
      * @param dateTime LocalDateTime object to be converted
      * @return String format of the LocalDateTime object
      */
@@ -112,7 +119,6 @@ public class Storage {
 
     /**
      * Creates the file as necessary, reads the TaskList and converts each value into a string and writes it to file.
-     * Error occurs if program is unable to write to the file.
      */
     public void saveToFile() {
         String toSave = "";
@@ -135,6 +141,9 @@ public class Storage {
             } else if (className.equals("Event")) {
                 taskType = "E";
                 newDate = unparseDate(((Event) value).at);
+            } else if (className.equals("FixedDuration")) {
+                taskType = "F";
+                newDate = ((FixedDuration) value).duration.toString();
             } else if (className.equals("DoWithinPeriod")) {
                 taskType = "W";
                 newDate = unparseDate(((DoWithinPeriod) value).from);
@@ -159,7 +168,7 @@ public class Storage {
         }
         try {
             Files.writeString(Paths.get(this.filePath), toSave);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
