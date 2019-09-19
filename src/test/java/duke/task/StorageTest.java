@@ -25,8 +25,6 @@ public class StorageTest {
         ArrayList<Task> newArrayList = newStorage.load();
         TaskList newTaskList = new TaskList(newArrayList);
         assertEquals(2, newTaskList.getSize());
-        assertEquals( "[D][NOT DONE] To Do (by: 2/2/2019 1830)" ,newTaskList.getTask(1).toString());
-
-
+        assertEquals("[D][NOT DONE] To Do (by: 2/2/2019 1830)", newTaskList.getTask(1).toString());
     }
 }

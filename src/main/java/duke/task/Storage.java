@@ -147,10 +147,11 @@ public class Storage {
             }
             if (newDate != "") {
                 if (endDate != "") {
-                    toSave += taskType + " | " + Integer.toString(isDone) + " | " + description + " | " + newDate + " | " + endDate + "\n";
-
+                    toSave += taskType + " | " + Integer.toString(isDone) + " | " + description
+                            + " | " + newDate + " | " + endDate + "\n";
                 } else {
-                    toSave += taskType + " | " + Integer.toString(isDone) + " | " + description + " | " + newDate + "\n";
+                    toSave += taskType + " | " + Integer.toString(isDone) + " | " + description
+                            + " | " + newDate + "\n";
                 }
             } else {
                 toSave += taskType + " | " + Integer.toString(isDone) + " | " + description + "\n";
