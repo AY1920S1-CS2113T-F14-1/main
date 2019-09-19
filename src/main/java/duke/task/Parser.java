@@ -1,14 +1,6 @@
 package duke.task;
 
-import duke.command.AddDeadLineCommand;
-import duke.command.AddEventCommand;
-import duke.command.AddToDoCommand;
-import duke.command.DeleteTaskCommand;
-import duke.command.ExitCommand;
-import duke.command.FindTaskCommand;
-import duke.command.ListTaskCommand;
-import duke.command.MarkTaskAsDoneCommand;
-import duke.command.Command;
+import duke.command.*;
 
 /**
  * Takes in a string and parses it to return a valid command to be ran.

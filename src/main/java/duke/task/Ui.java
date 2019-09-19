@@ -1,5 +1,8 @@
 package duke.task;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -21,14 +24,28 @@ public class Ui {
      */
     public void showWelcome() {
         String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
+                    + "|  _ \\ _   _| | _____ \n"
+                    + "| | | | | | | |/ / _ \\\n"
+                    + "| |_| | |_| |   <  __/\n"
+                    + "|____/ \\__,_|_|\\_\\___|\n";
         System.out.println(logo + "Hello! I'm Duke\nWhat can I do for you?");
 
     }
 
+    
+    public void showReminder(TaskList tasks) {
+        LocalDateTime currentDate = LocalDateTime.now();
+        int counter = 1;
+        System.out.println("REMINDER!!! Events/Deadlines this week:");
+        for (int i = 0; i < tasks.getSize(); i += 1) {
+            if (!tasks.getDate(i).equals(null) && tasks.getDate(i).getHour() - currentDate.getHour() < 168) {
+                //168 hours in a week
+                System.out.println(counter + ". " + tasks.getTask(i));
+                counter += 1;
+            }
+        }
+    }
+    
     /**
      * Used to read input from the user.
      * @return String representing the input given by the User

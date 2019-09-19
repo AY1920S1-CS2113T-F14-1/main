@@ -2,6 +2,7 @@ package duke.task;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * Represents a deadline task that allows for a deadline to be set.
@@ -19,7 +20,11 @@ public class Deadline extends Task {
         super(description);
         this.by = by;
     }
-
+    
+    public LocalDateTime getDate() {
+        return by;
+    }
+    
     @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + dateToString(by) + ")";

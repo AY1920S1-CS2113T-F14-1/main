@@ -32,6 +32,7 @@ public class Duke {
      */
     public void run() {
         ui.showWelcome();
+        ui.showReminder(tasks);
         boolean isExit = false;
         while (!isExit) {
             try {
