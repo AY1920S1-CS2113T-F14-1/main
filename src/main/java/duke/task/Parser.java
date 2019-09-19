@@ -10,6 +10,7 @@ import duke.command.ListTaskCommand;
 import duke.command.MarkTaskAsDoneCommand;
 import duke.command.Command;
 import duke.command.ViewSchedule;
+import duke.command.AddDoWithinPeriodCommand;
 
 /**
  * Takes in a string and parses it to return a valid command to be ran.
@@ -38,13 +39,11 @@ public class Parser {
             return new DeleteTaskCommand(false, input);
         } else if (input.startsWith("view")) {
             return new ViewSchedule(false, input);
-        } else if (input.startsWith("fixed " )) {
-            return new AddFixedDurationCommand(false, input);
-        } else if (input.equals("bye")) {
-            return new ExitCommand(true, "");
         } else if (input.startsWith("dowithin ")) {
             return new AddDoWithinPeriodCommand(false, input);
-        } else {
+        } else if (input.equals("bye")) {
+            return new ExitCommand(true, "");
+        }  else {
             throw new DukeException("OOPS!!! I'm sorry, but I don't know what that means :-(");
         }
     }

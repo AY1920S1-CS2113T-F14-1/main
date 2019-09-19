@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -58,13 +57,7 @@ public class Storage {
                             newDeadline.markAsDone();
                         }
                         taskList.add(newDeadline);
-                    } else if (value.charAt(0) == 'F') {
-                        FixedDuration newFixedDuration = new FixedDuration(splitInput[2], Duration.parse(splitInput[3]));
-                        if (splitInput[1].equals("1")) {
-                            newFixedDuration.markAsDone();
-                        }
-                        taskList.add(newFixedDuration);
-                    } else if (value.charAt(0) == 'W') {
+                    }  else if (value.charAt(0) == 'W') {
                         DoWithinPeriod newDoWithinPeriod = new DoWithinPeriod(splitInput[2],
                                 parseDate(splitInput[3]), parseDate(splitInput[4]));
                         if (splitInput[1].equals("1")) {
@@ -141,9 +134,6 @@ public class Storage {
             } else if (className.equals("Event")) {
                 taskType = "E";
                 newDate = unparseDate(((Event) value).at);
-            } else if (className.equals("FixedDuration")) {
-                taskType = "F";
-                newDate = ((FixedDuration) value).duration.toString();
             } else if (className.equals("DoWithinPeriod")) {
                 taskType = "W";
                 newDate = unparseDate(((DoWithinPeriod) value).from);

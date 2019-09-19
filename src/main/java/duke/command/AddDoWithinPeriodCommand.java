@@ -39,7 +39,7 @@ public class AddDoWithinPeriodCommand extends Command {
         String from = input.substring(startIndex + 6, endIndex-1);
         String to = input.substring(endIndex + 4);
         String task = input.substring(0, startIndex - 1);
-        System.out.println(from + " " + to + " " + task);
+
         LocalDateTime startValue = parseDate(from);
         if (startValue == null) {
             return;
@@ -47,6 +47,9 @@ public class AddDoWithinPeriodCommand extends Command {
         LocalDateTime endValue = parseDate(to);
         if (endValue == null) {
             return;
+        }
+        if (startValue.compareTo(endValue) > 1) {
+            throw new DukeException("Start time cannot be later than end time.");
         }
 
         DoWithinPeriod toAdd = new DoWithinPeriod(task, startValue, endValue);

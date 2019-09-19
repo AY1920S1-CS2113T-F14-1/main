@@ -26,7 +26,7 @@ public class DoWithinPeriod extends Task {
 
     @Override
     public String toString() {
-        return "[W]" + super.toString() + " (from: " + dateToString(from) + " to: " + dateToString(to) + ")";
+        return "[W]" + super.toString() + " (within: " + dateToString(from) + " - " + dateToString(to) + ")";
     }
 
     /**
