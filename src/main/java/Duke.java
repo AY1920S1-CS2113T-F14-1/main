@@ -66,6 +66,14 @@ public class Duke {
             return ui.printException(e);
         }
     }
+    
+    protected String showWelcome() {
+        return ui.showWelcome();
+    }
+    
+    protected String showReminder() {
+        return ui.showReminder(tasks);
+    }
 
     /**
      * Runs Duke.

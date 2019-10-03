@@ -1,8 +1,6 @@
 package duke.task;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -22,28 +20,32 @@ public class Ui {
     /**
      * Prints the welcome message to the User.
      */
-    public void showWelcome() {
+    public String showWelcome() {
         String logo = " ____        _        \n"
-                    + "|  _ \\ _   _| | _____ \n"
+                    + "|  _ \\_   _| | _____ \n"
                     + "| | | | | | | |/ / _ \\\n"
                     + "| |_| | |_| |   <  __/\n"
-                    + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println(logo + "Hello! I'm Duke\nWhat can I do for you?");
+                    + "|____/\\__,_|_|\\_\\___|\n";
+        return (logo + "Hello! I'm Duke\nWhat can I do for you?");
 
     }
-
     
-    public void showReminder(TaskList tasks) {
+    /**
+     * Prints the events and deadlines that will occur within the next week.
+     * @param tasks the Tasklist object that contains the tasks
+     */
+    public String showReminder(TaskList tasks) {
+        String reminder = "REMINDER!!! Events/Deadlines this week:\n";
         LocalDateTime currentDate = LocalDateTime.now();
         int counter = 1;
-        System.out.println("REMINDER!!! Events/Deadlines this week:");
         for (int i = 0; i < tasks.getSize(); i += 1) {
             if (!tasks.getDate(i).equals(null) && tasks.getDate(i).getHour() - currentDate.getHour() < 168) {
                 //168 hours in a week
-                System.out.println(counter + ". " + tasks.getTask(i));
+                reminder = reminder + (counter + ". " + tasks.getTask(i) + "\n");
                 counter += 1;
             }
         }
+        return reminder;
     }
     
     /**

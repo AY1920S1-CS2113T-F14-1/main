@@ -1,3 +1,4 @@
+import duke.task.Ui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -38,6 +39,11 @@ public class MainWindow extends AnchorPane {
      * Handles input given by the user and creates a DialogBox for every value given by user or response given by Duke.
      */
     private void handleUserInput() throws InterruptedException {
+        dialogContainer.getChildren().addAll(
+                DialogBox.getDukeDialog(duke.showWelcome(), dukeImage),
+                DialogBox.getDukeDialog(duke.showReminder(), dukeImage)
+        );
+        
         String input = userInput.getText();
         String response = duke.getResponse(input);
         String[] splitArray = response.split("\n");
